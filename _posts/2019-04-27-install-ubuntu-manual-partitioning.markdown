@@ -95,7 +95,7 @@ sudo mkfs.ext4 /dev/ubuntu/home
 You can make swap, but it is going to be formatted by installer anyway:
 
 {% highlight bash %}
-mkswap /dev/sdz3
+sudo mkswap /dev/sdz3
 {% endhighlight %}
 
 ### V. Install Ubuntu
