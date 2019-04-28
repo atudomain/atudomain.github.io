@@ -4,4 +4,4 @@ title: About
 permalink: /about/
 ---
 
-This is the just a blog with linux tutorials. They may be useful for me as well as for others.
+This is just a blog with linux tutorials.
