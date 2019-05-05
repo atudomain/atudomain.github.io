@@ -99,7 +99,7 @@ Test apache-2 by writing in your browser:
 http://192.168.66.12/?firstname=adrian&lastname=adriansurname#example
 {% endhighlight %}
 
-Now the page should be loaded with Example headline at the top. After you scroll to top you should be able to see parameters passed in url.
+Now the page should be loaded with Example headline at the top. After you scroll to top you should be able to see parameter values passed in url.
 
 ### V. Redirect page and remove query string
 
@@ -139,7 +139,7 @@ Restart apache gracefully. You should be able to access the page from apache-2 u
 http://192.168.66.11/?firstname=adrian&lastname=adriansurname#example
 {% endhighlight %}
 
-Address will change to 192.168.66.12 in your browser bar and anchor will be kept. Query string will not be present and parameters will be empty.
+Address will change to 192.168.66.12 in your browser bar and anchor will be kept. Query string will not be present and parameters will have no value.
 
 ### VI. Change redirection to reverse proxy
 
