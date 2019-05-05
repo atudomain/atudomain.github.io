@@ -89,6 +89,8 @@ document.write(getUrlParameter('lastname'));
 </html>
 {% endhighlight %}
 
+JavaScript function was borrowed from A-Frame VR toolkit.
+
 Paste enough "<p>text</p>" to be able to test anchor in url (so scrolling makes sense).
 
 Test apache-2 by writing in your browser:
