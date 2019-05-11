@@ -66,6 +66,6 @@ cat atudomain.key > atudomain.pem
 cat atudomain.crt >> atudomain.pem
 {% endhighlight %}
 
-Note, that 'atudomain.pem' contains certificate private key.
+Note, that 'atudomain.pem' contains certificate private key. Also, intermediate certificates should be appended to this file.
 
 [there]: https://deliciousbrains.com/ssl-certificate-authority-for-local-https-development/
