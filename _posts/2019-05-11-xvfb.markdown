@@ -81,7 +81,7 @@ Description='VNC server for display :2'
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/x11vnc -viewonly -localhost -display :2 -passwdfile /etc/x11vnc/vncpasswd
+ExecStart=/usr/bin/x11vnc -viewonly -localhost -display :2 -passwdfile /etc/x11vnc/vncpasswd -forever
 User=root
 
 [Install]
@@ -95,6 +95,7 @@ ssh -L 5900:localhost:5900 user@server
 {% endhighlight %}
 
 Alternatively, certificate can be generated and placed into for example '/etc/x11vnc/certs':
+(IMPORTANT: ssl support is probably broken on some versions of x11vnc and direct connection with client is not possible.)
 
 {% highlight bash %}
 sudo mkdir /etc/x11/vnc/certs
@@ -105,7 +106,7 @@ You can learn on generating certificate [here][here].
 Then, remove '-localhost' option from service file and add encryption so the line looks like: 
 
 ```
-ExecStart=/usr/bin/x11vnc -viewonly -display :2 -passwdfile /etc/x11vnc/vncpasswd -ssl /etc/x11vnc/certs/vnc.pem
+ExecStart=/usr/bin/x11vnc -viewonly -display :2 -passwdfile /etc/x11vnc/vncpasswd -ssl /etc/x11vnc/certs/vnc.pem -forever
 ```
 
 To allow interactive usage of display, remove '-viewonly' option. Start and enable the service:
