@@ -1,0 +1,120 @@
+---
+layout: post
+title:  "Virtual display service on Ubuntu server"
+date:   2019-05-11 13:17:00 +0200
+categories: jekyll update
+---
+
+If you have a necessity to use some graphical applications on your server linux, for example to run automated browser tests, this is probably the right tutorial.
+
+I used Ubuntu 19.04 server.
+
+### I. Install xvfb
+
+Install xvfb using apt:
+
+{% highlight bash %}
+sudo apt install xvfb
+{% endhighlight %}
+
+For details and advanced usage consult [xfvb manual][xvfb manual].
+### II. Create service file
+
+Service file can be created to easily start and stop display, as well as enabling it on system startup:
+
+```
+[Unit]
+Description='Virtual Display :2.0'
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/Xvfb :2 -screen 0 1600x1200x16
+User=root
+
+[Install]
+WantedBy=multi-user.target
+```
+
+You can specify any existing user to run the display, many other parameters can be customized too. In previous example user was root, display was described with :2 and one screen with number 0 was defined with 1600x1200 resolution and 16-bit color depth. Note that not all resolutions and depths are supported.
+
+### II. Start and enable the service
+
+To start and enable the service type:
+
+{% highlight bash %}
+sudo systemctl start display
+sudo systemctl enable display
+{% endhighlight %}
+
+### III. Make virtual display usable in shell
+
+To specify Xvfb display to be used with X applications, define DISPLAY variable:
+
+{% highlight bash %}
+export DISPLAY=:2.0
+{% endhighlight %}
+
+You can also define the variable in /etc/profile for all users or do it for your local shell. Now you can run applications such as firefox (obviously not being able to see anything directly).
+
+### IV. (Optional) Install x11vnc to access the display
+
+If you really want to watch the virtual screen, you can install vnc server and connect to that screen.
+
+Install x11vnc with apt:
+
+{% highlight bash %}
+sudo apt install x11vnc
+{% endhighlight %}
+
+Set up password for vnc server access, for example in first line of file '/etc/x11vnc/vncpasswd' and limit its permissions:
+
+{% highlight bash %}
+sudo mkdir /etc/x11vnc
+sudo vim /etc/x11vnc/vncpasswd
+sudo chmod 700 /etc/x11vnc/vncpasswd
+{% endhighlight %}
+
+Create service file 'vncserver.service' in '/etc/systemd/system/':
+```
+[Unit]
+Description='VNC server for display :2'
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/x11vnc -viewonly -localhost -display :2 -rfbauth /etc/x11vnc/vncpasswd
+User=root
+
+[Install]
+WantedBy=multi-user.target
+```
+
+Session is unencrypted so it is advised to use ssh tunnel to access it on remote host:
+
+{% highlight bash %}
+ssh -L 5900:localhost:5900 user@server
+{% endhighlight %}
+
+Alternatively, certificate can be generated and placed into for example '/etc/x11vnc/certs':
+
+{% highlight bash %}
+sudo mkdir /etc/x11/vnc/certs
+sudo mv vnc.pem /etc/x11/vnc/certs/vnc.pem
+{% endhighlight %}
+
+You can learn on generating certificate [here][here].
+Then, remove '-localhost' option from service file and add encryption so the line looks like: 
+
+```
+ExecStart=/usr/bin/x11vnc -viewonly -display :2 -rfbauth /etc/x11vnc/vncpasswd -ssl /etc/x11vnc/certs/vnc.pem
+```
+
+To allow interactive usage of display, remove '-viewonly' option. Start and enable the service:
+
+{% highlight bash %}
+sudo systemctl start vncserver
+sudo systemctl enable vncserver
+{% endhighlight %}
+
+[here]: https://atudomain.github.io/jekyll/update/2019/04/28/generate-ssl-certificate.html
+[xvfb manual]: https://www.x.org/releases/X11R7.6/doc/man/man1/Xvfb.1.xhtml
+
