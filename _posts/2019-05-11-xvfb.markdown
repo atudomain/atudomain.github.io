@@ -29,13 +29,13 @@ Description='Virtual Display :2.0'
 [Service]
 Type=simple
 ExecStart=/usr/bin/Xvfb :2 -screen 0 1600x1200x16
-User=root
+User=vncuser
 
 [Install]
 WantedBy=multi-user.target
 ```
 
-You can specify any existing user to run the display, many other parameters can be customized too. In previous example user was root, display was described with :2 and one screen with number 0 was defined with 1600x1200 resolution and 16-bit color depth. Note that not all resolutions and depths are supported.
+You can specify any existing user to run the display, many other parameters can be customized too. In previous example user was vncuser, display was described with :2 and one screen with number 0 was defined with 1600x1200 resolution and 16-bit color depth. Note that not all resolutions and depths are supported.
 
 ### II. Start and enable the service
 
@@ -90,7 +90,7 @@ Description='Tiger VNC server for display :2'
 [Service]
 Type=simple
 ExecStart=/usr/bin/x0vncserver -display :2 -X509Cert /etc/x0vncserver/certs/atudomain.crt -X509Key /etc/x0vncserver/certs/atudomain.key -SecurityTypes X509Vnc -passwordfile /etc/x0vncserver/vncpasswd
-User=root
+User=vncuser
 
 [Install]
 WantedBy=multi-user.target
@@ -140,7 +140,7 @@ Description='VNC server for display :2'
 [Service]
 Type=simple
 ExecStart=/usr/bin/x11vnc -viewonly -localhost -display :2 -passwdfile /etc/x11vnc/vncpasswd -forever
-User=root
+User=vncuser
 
 [Install]
 WantedBy=multi-user.target
@@ -149,7 +149,7 @@ WantedBy=multi-user.target
 Session is unencrypted so it is advised to use ssh tunnel to access it on remote host:
 
 {% highlight bash %}
-ssh -L 5900:localhost:5900 user@server
+ssh -L 5900:localhost:5900 vncuser@server
 {% endhighlight %}
 
 To allow interactive usage of display, remove '-viewonly' option. Start and enable the service:
