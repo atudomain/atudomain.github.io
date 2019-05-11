@@ -97,7 +97,7 @@ ssh -L 5900:localhost:5900 user@server
 
 Alternatively, certificate can be generated and placed into for example '/etc/x11vnc/certs':
 
-(IMPORTANT: ssl support is probably broken on some versions of x11vnc and direct connection with client is not possible.)
+(IMPORTANT: ssl support is probably broken on some versions of x11vnc and direct connection with client is not possible this way.)
 
 {% highlight bash %}
 sudo mkdir /etc/x11/vnc/certs
