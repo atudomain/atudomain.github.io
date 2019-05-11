@@ -97,7 +97,7 @@ ssh -L 5900:localhost:5900 user@server
 
 Alternatively, certificate can be generated and placed into for example '/etc/x11vnc/certs':
 
-(IMPORTANT: ssl support is probably broken on some versions of x11vnc and direct connection with client is not possible this way.)
+(IMPORTANT: ssl is hard to configure or incompatible with most vnc clients. Use client downloaded from [x11vnc site][x11vnc site].)
 
 {% highlight bash %}
 sudo mkdir /etc/x11/vnc/certs
@@ -121,4 +121,4 @@ sudo systemctl enable vncserver
 
 [here]: https://atudomain.github.io/jekyll/update/2019/04/28/generate-ssl-certificate.html
 [xvfb manual]: https://www.x.org/releases/X11R7.6/doc/man/man1/Xvfb.1.xhtml
-
+[x11vnc site]: http://www.karlrunge.com/x11vnc/ssvnc.html#download
