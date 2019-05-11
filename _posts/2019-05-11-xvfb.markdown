@@ -42,6 +42,7 @@ You can specify any existing user to run the display, many other parameters can 
 To start and enable the service type:
 
 {% highlight bash %}
+sudo systemctl daemon-reload
 sudo systemctl start display
 sudo systemctl enable display
 {% endhighlight %}
@@ -95,6 +96,7 @@ ssh -L 5900:localhost:5900 user@server
 {% endhighlight %}
 
 Alternatively, certificate can be generated and placed into for example '/etc/x11vnc/certs':
+
 (IMPORTANT: ssl support is probably broken on some versions of x11vnc and direct connection with client is not possible.)
 
 {% highlight bash %}
@@ -112,6 +114,7 @@ ExecStart=/usr/bin/x11vnc -viewonly -display :2 -passwdfile /etc/x11vnc/vncpassw
 To allow interactive usage of display, remove '-viewonly' option. Start and enable the service:
 
 {% highlight bash %}
+sudo systemctl daemon-reload
 sudo systemctl start vncserver
 sudo systemctl enable vncserver
 {% endhighlight %}
