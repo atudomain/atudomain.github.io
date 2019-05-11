@@ -95,22 +95,6 @@ Session is unencrypted so it is advised to use ssh tunnel to access it on remote
 ssh -L 5900:localhost:5900 user@server
 {% endhighlight %}
 
-Alternatively, certificate can be generated and placed into for example '/etc/x11vnc/certs':
-
-(IMPORTANT: ssl is hard to configure or incompatible with most vnc clients. Use client downloaded from [x11vnc site][x11vnc site].)
-
-{% highlight bash %}
-sudo mkdir /etc/x11/vnc/certs
-sudo mv vnc.pem /etc/x11/vnc/certs/vnc.pem
-{% endhighlight %}
-
-You can learn on generating certificate [here][here].
-Then, remove '-localhost' option from service file and add encryption so the line looks like: 
-
-```
-ExecStart=/usr/bin/x11vnc -viewonly -display :2 -passwdfile /etc/x11vnc/vncpasswd -ssl /etc/x11vnc/certs/vnc.pem -forever
-```
-
 To allow interactive usage of display, remove '-viewonly' option. Start and enable the service:
 
 {% highlight bash %}
@@ -119,6 +103,7 @@ sudo systemctl start vncserver
 sudo systemctl enable vncserver
 {% endhighlight %}
 
+Do not bother with ssl encryption using x11vnc. The binary is very old, ssl support is out-of-date or broken.
+
 [here]: https://atudomain.github.io/jekyll/update/2019/04/28/generate-ssl-certificate.html
 [xvfb manual]: https://www.x.org/releases/X11R7.6/doc/man/man1/Xvfb.1.xhtml
-[x11vnc site]: http://www.karlrunge.com/x11vnc/ssvnc.html#download
