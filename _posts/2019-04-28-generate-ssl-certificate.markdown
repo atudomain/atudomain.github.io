@@ -57,4 +57,15 @@ openssl x509 -req -in atudomain.csr -CA atudomain-CA.pem \
 -out atudomain.crt -days 1825 -sha256 -extfile atudomain.ext
 {% endhighlight %}
 
+### III. Create PEM ()
+
+To create Privacy Enhanced Mail (PEM) format from created certificate, run:
+
+{% highlight bash %}
+cat atudomain.key > atudomain.pem
+cat atudomain.crt >> atudomain.pem
+{% endhighlight %}
+
+Note, that 'atudomain.pem' contains certificate private key.
+
 [there]: https://deliciousbrains.com/ssl-certificate-authority-for-local-https-development/
