@@ -47,7 +47,7 @@ sudo systemctl start display
 sudo systemctl enable display
 {% endhighlight %}
 
-### III. Make virtual display usable in shell
+### III. Make virtual display useable in shell
 
 To specify Xvfb display to be used with X applications, define DISPLAY variable:
 
