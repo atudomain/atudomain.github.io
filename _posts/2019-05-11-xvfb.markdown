@@ -57,7 +57,64 @@ export DISPLAY=:2.0
 
 You can also define the variable in /etc/profile for all users or do it for your local shell. Now you can run applications such as firefox (obviously not being able to see anything directly).
 
-### IV. (Optional) Install x11vnc to access the display
+### IV.a. (Optional) Install tigervnc to access the display (with SSL)
+
+Install tigervnc scrapping server:
+
+{% highlight bash %}
+sudo apt install tigervnc-scraping-server 
+{% endhighlight %}
+
+Set password:
+
+{% highlight bash %}
+sudo mkdir /etc/x0vncserver
+sudo vncpasswd /etc/x0vncserver/vncpasswd
+sudo chmod 600 /etc/x0vncserver/vncpasswd
+{% endhighlight %}
+
+Create or copy certificates (more on certificates [there][there]):
+
+{% highlight bash %}
+sudo mkdir /etc/x0vncserver/certs
+sudo mv atudomain.crt /etc/x0vncserver/certs/atudomain.crt
+sudo mv atudomain.key /etc/x0vncserver/certs/atudomain.key
+{% endhighlight %}
+
+Create service 'tiger.service' in '/etc/systemd/system/':
+
+```
+[Unit]
+Description='Tiger VNC server for display :2'
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/x0vncserver -display :2 -X509Cert /etc/x0vncserver/certs/atudomain.crt -X509Key /etc/x0vncserver/certs/atudomain.key -SecurityTypes X509Vnc -passwordfile /etc/x0vncserver/vncpasswd
+User=root
+
+[Install]
+WantedBy=multi-user.target
+```
+
+Now, open client supporting X509Vnc, such as [Remmina][Remmina] and enter appropriate public certificate when prompted or copy it to the configuration.
+
+When using Remmina, you can choose 'CA Certificate File' and use your CA public certificate ('atudomain-CA.pem').
+
+If you want encrypted connection, but do not want to use predefined certificates (which would be more secure), you can use VeNCrypt and TLSVnc SecurityTypes, replacing this line in 'tiger.service':
+
+```
+ExecStart=/usr/bin/x0vncserver -display :2 -SecurityTypes VeNCrypt,TLSVnc -passwordfile /etc/x0vncserver/vncpasswd
+```
+
+It was verified that Remmina supports this connection. Start and enable the service:
+
+{% highlight bash %}
+sudo systemctl daemon-reload
+sudo systemctl start tiger
+sudo systemctl enable tiger
+{% endhighlight %}
+
+### IV.b. (Optional) Install x11vnc to access the display
 
 If you really want to watch the virtual screen, you can install vnc server and connect to that screen.
 
@@ -72,7 +129,7 @@ Set up password for vnc server access, for example in first line of file '/etc/x
 {% highlight bash %}
 sudo mkdir /etc/x11vnc
 sudo vim /etc/x11vnc/vncpasswd
-sudo chmod 700 /etc/x11vnc/vncpasswd
+sudo chmod 600 /etc/x11vnc/vncpasswd
 {% endhighlight %}
 
 Create service file 'vncserver.service' in '/etc/systemd/system/':
@@ -105,5 +162,6 @@ sudo systemctl enable vncserver
 
 Do not bother with ssl encryption using x11vnc. The binary is very old, ssl support is out-of-date or broken.
 
-[here]: https://atudomain.github.io/jekyll/update/2019/04/28/generate-ssl-certificate.html
 [xvfb manual]: https://www.x.org/releases/X11R7.6/doc/man/man1/Xvfb.1.xhtml
+[there]: https://atudomain.github.io/jekyll/update/2019/04/28/generate-ssl-certificate.html
+[Remmina]: https://remmina.org/
