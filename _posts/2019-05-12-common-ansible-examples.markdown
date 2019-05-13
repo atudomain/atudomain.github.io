@@ -160,7 +160,7 @@ var2=world
 
 - Use internal variables
 
-Use predefined variables to construct other variables or just to use their values. Very important variable is {{ "{{ ansible_user " }}}}. It can be used to make path to home directory on each host as an example (but '~' works even better).
+Use predefined variables to construct other variables or just to use their values. Very important variable is "{{ "{{ ansible_user " }}}}. It can be used to make path to home directory on each host as an example (but '~' works even better).
 
 ```
 [all:vars]
@@ -179,8 +179,8 @@ var3="say hello to {{ "{{ ansible_user " }}}}"
     copy:
       src: template.txt
       dest: ~/template.txt
-      owner: {{ "{{ ansible_user " }}}}
-      group: {{ "{{ ansible_user " }}}}
+      owner: "{{ "{{ ansible_user " }}}}"
+      group: "{{ "{{ ansible_user " }}}}"
       mode: 0644
 
 {% endhighlight %}
@@ -204,8 +204,8 @@ Run ('copy' was changed to 'template'):
     template:
       src: template.txt
       dest: ~/template.txt
-      owner: {{ "{{ ansible_user " }}}}
-      group: {{ "{{ ansible_user " }}}}
+      owner: "{{ "{{ ansible_user " }}}}"
+      group: "{{ "{{ ansible_user " }}}}"
       mode: 0644
 
 {% endhighlight %}
@@ -244,25 +244,17 @@ Remove line:
 
 Use 'state: present' to ensure that line exists (create).
 
-Replace line and change file ownership and permissions:
+Replace line (sed is not bad, be careful with lineinfile as it sometimes surprises - ignore ansible warnings):
 
 {% highlight yml %}
 ---
 - hosts: ubuntu1904
   become: true
   tasks:
-  - name: Append lines to file if they not exist
-    lineinfile:
-      path: /etc/hosts
-      regexp: '^127\.0\.0\.1'
-      line: '127.0.0.1 localhost'
-      owner: root
-      group: root
-      mode: 0644
+  - name: Replace lines in file
+    shell: 'sed -i "s/127.0.0.1/127.0.0.1 localhost/g" /etc/hosts'
 
 {% endhighlight %}
-
-More examples in [ansible documentation][ans_doc].
 
 - Other uses
 
@@ -279,7 +271,7 @@ Install multiple packages wiht apt:
   tasks:
   - name: Install several packages
     apt:
-      name: {{ "{{ item " }}}}
+      name: "{{ "{{ item " }}}}"
       state: present
     with_items:
       - tree
