@@ -21,7 +21,7 @@ Alternatively create passphrase key:
 {% highlight bash %}
 openssl genrsa -des3 -out atudomain-CA.key 2048
 {% endhighlight %}
- 
+
 Generate the certificate:
 
 {% highlight bash %}
@@ -44,7 +44,7 @@ authorityKeyIdentifier=keyid,issuer
 basicConstraints=CA:FALSE
 keyUsage = digitalSignature, nonRepudiation, keyEncipherment, dataEncipherment
 subjectAltName = @alt_names
- 
+
 [alt_names]
 DNS.1 = atudomain
 DNS.2 = atudomain.local
@@ -57,15 +57,15 @@ openssl x509 -req -in atudomain.csr -CA atudomain-CA.pem \
 -out atudomain.crt -days 1825 -sha256 -extfile atudomain.ext
 {% endhighlight %}
 
-### III. Create PEM ()
+### III. Create certificate bundle in .pem format
 
-To create Privacy Enhanced Mail (PEM) format from created certificate, run:
+To create bundle in .pem format from created certificate and key, run:
 
 {% highlight bash %}
 cat atudomain.key > atudomain.pem
 cat atudomain.crt >> atudomain.pem
 {% endhighlight %}
 
-Note, that 'atudomain.pem' contains certificate private key. Also, intermediate certificates should be appended to this file.
+Note, that 'atudomain.pem' contains certificate private key. Also, intermediate certificates should be appended to this file if exist.
 
 [there]: https://deliciousbrains.com/ssl-certificate-authority-for-local-https-development/
