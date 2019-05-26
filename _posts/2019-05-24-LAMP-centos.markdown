@@ -59,5 +59,5 @@ sudo apachectl graceful
 
 Access 'http://localhost:80/hello.php'.
 
-[here]: https://atudomain.github.io/jekyll/update/2019/05/27/php-centos7.html
-[here2]: https://atudomain.github.io/jekyll/update/2019/05/27/mariadb-centos7.html
+[here]: https://atudomain.github.io/jekyll/update/2019/05/26/php-centos7.html
+[here2]: https://atudomain.github.io/jekyll/update/2019/05/26/mariadb-centos7.html
