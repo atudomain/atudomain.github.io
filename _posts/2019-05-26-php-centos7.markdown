@@ -16,7 +16,7 @@ sudo yum install php
 sudo yum install php-gd
 {% endhighlight %}
 
-### III. Install any version of php from remi repo
+### II. Install any version of php from remi repo
 
 Install remi-repo:
 
