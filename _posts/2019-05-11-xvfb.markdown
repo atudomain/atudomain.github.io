@@ -62,7 +62,7 @@ You can also define the variable in /etc/profile for all users or do it for your
 Install tigervnc scrapping server:
 
 {% highlight bash %}
-sudo apt install tigervnc-scraping-server 
+sudo apt install tigervnc-scraping-server
 {% endhighlight %}
 
 Set password:
@@ -95,6 +95,8 @@ User=vncuser
 [Install]
 WantedBy=multi-user.target
 ```
+
+*service file to be verified*
 
 Now, open client supporting X509Vnc, such as [Remmina][Remmina] and enter appropriate public certificate when prompted or copy it to the configuration.
 
