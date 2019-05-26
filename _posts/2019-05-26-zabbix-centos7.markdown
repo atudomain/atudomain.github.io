@@ -5,7 +5,7 @@ date:   2019-05-26 16:53:00 +0200
 categories: jekyll update
 ---
 
-Why not to try nginx? Based on nice materials [there][there], but shorter and with updated versions of software. Check if newer versions are already present.
+In this tutorial, zabbix server will be installed on centos server 1 and centos server 2 will be monitored.
 
 ### I. Install nginx
 
@@ -35,13 +35,53 @@ sudo systemctl enable nginx
 
 ### II. Install MariaDB
 
-Install MariaDB as described [here][here2].
+Enable maria repo in similar fashion as nginx, by creating file '/etc/yum.repos.d/MariaDB.repo':
+
+```
+[mariadb]
+name=MariaDB
+baseurl=http://yum.mariadb.org/10.3/centos7-amd64
+gpgkey=https://yum.mariadb.org/RPM-GPG-KEY-MariaDB
+gpgcheck=1
+```
+
+Install MariaDB:
+
+{% highlight bash %}
+sudo yum install MariaDB-server MariaDB-client
+{% endhighlight %}
+
+Start it and enable it:
+
+{% highlight bash %}
+sudo systemctl start mariadb
+sudo systemctl enable mariadb
+{% endhighlight %}
+
+Use secure installation script on runnig mariadb by typing:
+
+{% highlight bash %}
+sudo mysql_secure_installation
+{% endhighlight %}
+
+To connect, use:
+
+{% highlight bash %}
+mysql -u root -p
+{% endhighlight %}
 
 Create 'wordpressuser' and its empty database 'wordpress'.
 
 ### III. Install php-fpm
 
-Install it from remi-repo as described [here][here]:
+Install it from remi-repo:
+
+{% highlight bash %}
+sudo yum install epel-release yum-utils
+sudo yum install http://rpms.remirepo.net/enterprise/remi-release-7.rpm
+sudo yum-config-manager --enable remi-php73
+sudo yum install php-cli php-fpm php-mysql php-json php-opcache php-mbstring php-xml php-gd php-curl
+{% endhighlight %}
 
 Customize php-fpm to run with nginx. Edit '/etc/php-fpm.d/www.conf' so it contains these key-value pairs:
 
@@ -161,5 +201,3 @@ Finally, finish by accessing and configuring defined page.
 [there]: https://linuxize.com/post/how-to-install-wordpress-with-nginx-on-centos-7/
 [there2]: https://atudomain.github.io/jekyll/update/2019/04/28/generate-ssl-certificate.html
 [there3]: https://linuxize.com/post/secure-nginx-with-let-s-encrypt-on-centos-7/
-[here]: https://atudomain.github.io/jekyll/update/2019/05/27/php-centos7.html
-[here2]: https://atudomain.github.io/jekyll/update/2019/05/27/mariadb-centos7.html
