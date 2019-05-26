@@ -41,7 +41,7 @@ Create 'wordpressuser' and its empty database 'wordpress'.
 
 ### III. Install php-fpm
 
-Install it from remi-repo as described [here][here]:
+Install it from remi-repo as described [here][here].
 
 Customize php-fpm to run with nginx. Edit '/etc/php-fpm.d/www.conf' so it contains these key-value pairs:
 
@@ -161,5 +161,5 @@ Finally, finish by accessing and configuring defined page.
 [there]: https://linuxize.com/post/how-to-install-wordpress-with-nginx-on-centos-7/
 [there2]: https://atudomain.github.io/jekyll/update/2019/04/28/generate-ssl-certificate.html
 [there3]: https://linuxize.com/post/secure-nginx-with-let-s-encrypt-on-centos-7/
-[here]: https://atudomain.github.io/jekyll/update/2019/05/26/php-centos7.html
+[here]: https://atudomain.github.io/jekyll/update/2019/05/26/php-centos7.html 
 [here2]: https://atudomain.github.io/jekyll/update/2019/05/26/mariadb-centos7.html
