@@ -17,7 +17,13 @@ sudo yum install httpd
 
 Next, install php and php gd (gd for better files uploads etc.). You can find how to do it [here][here].
 
-'libphp5.so' library should be already present for httpd.
+If you have chosen php from remi repo, there is still a need to install php module (that provided by remi repo) for apache:
+
+{% highlight bash %}
+sudo yum install mod_php
+{% endhighlight %}
+
+Without it, php is not interpreted by web server.
 
 ### II. Install MariaDB
 
@@ -25,7 +31,7 @@ Install MariaDB as described [here][here2].
 
 ### III. Test php with apache
 
-Create hello.php file in '/var/www/html':
+Create 'hello.php' file in '/var/www/html':
 
 ```
 <html>
@@ -38,15 +44,6 @@ Create hello.php file in '/var/www/html':
   ?>
 </body>
 </html>
-```
-
-Create hello.conf file in '/etc/httpd/conf.d':
-
-```
-<VirtualHost *:80>
-        ServerName localhost
-        DocumentRoot "/var/www/html"
-</VirtualHost>
 ```
 
 Start and enable 'httpd' service then access, reload configuration:
