@@ -46,7 +46,7 @@ Create 'hello.php' file in '/var/www/html':
 </html>
 ```
 
-Start and enable 'httpd' service then access, reload configuration:
+Start and enable 'httpd' service, reload configuration:
 
 {% highlight bash %}
 sudo systemctl start httpd
