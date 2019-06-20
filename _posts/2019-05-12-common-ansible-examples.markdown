@@ -362,6 +362,12 @@ Execute with '-v' option for verbose output:
 ansible-playbook playbook-of-roles.yml -i hosts -v
 {% endhighlight %}
 
+Run only one selected role from a playbook, that requires sudo:
+
+{% highlight bash %}
+ansible ubuntu1904 -i hosts -m include_role -a 'name=role1' --become
+{% endhighlight %}
+
 ### BONUS: Easily connect ansible through jumphost
 
 Put this to [all:vars]:
