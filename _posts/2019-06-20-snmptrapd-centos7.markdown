@@ -17,13 +17,15 @@ sudo yum install net-snmp
 
 Path of the config file is '/etc/snmp/snmptrapd.conf'.
 
-### II. Receive all traps
+### II. Receive traps
 
-Put the following line into snmptrapd.conf:
+If you do not want any security put the following line into snmptrapd.conf:
 
 ```
 disableAuthorization yes
 ```
+
+Otherwise you can configure community or other security features.
 
 Start and enable the service:
 
@@ -38,4 +40,3 @@ Watch to test that traps are received:
 sudo journalctl -f -u snmptrapd.service
 {% endhighlight %}
 
-### III. TODO
