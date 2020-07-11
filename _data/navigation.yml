@@ -1,5 +1,7 @@
 - name: Home
   link: /
+- name: Natrix
+  link: /natrix.html
 - name: Categories
   link: /categories.html
 - name: All Posts
