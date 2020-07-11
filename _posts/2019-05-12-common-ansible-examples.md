@@ -1,8 +1,8 @@
 ---
 layout: post
+label: beginnings
 title:  "Examples: Common Ansible usage"
 date:   2019-05-12 16:48:00 +0200
-categories: jekyll update
 ---
 
 Let's write down some common Ansible examples so ad-hoc tasks can be performed quickly. Note that examples need ssh keys exchanged with remote hosts and user 'user' configured on those servers that can sudo without a password (and 'user1', 'user2' etc).

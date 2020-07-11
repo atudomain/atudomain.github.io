@@ -1,8 +1,8 @@
 ---
 layout: post
+label: beginnings
 title:  "KVM on Ubuntu server"
 date:   2019-05-19 12:40:00 +0200
-categories: jekyll update
 ---
 
 Virtualization is important part of production environments. Where comes convenience and simplicity, there often come serious limitations.

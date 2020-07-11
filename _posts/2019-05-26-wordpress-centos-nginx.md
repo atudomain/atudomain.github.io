@@ -1,8 +1,8 @@
 ---
 layout: post
+label: beginnings
 title:  "Centos 7: Wordpress on nginx"
 date:   2019-05-26 16:53:00 +0200
-categories: jekyll update
 ---
 
 Why not to try nginx? Based on nice materials [there][there], but shorter and with updated versions of software. Check if newer versions are already present.
@@ -161,5 +161,5 @@ Finally, finish by accessing and configuring defined page.
 [there]: https://linuxize.com/post/how-to-install-wordpress-with-nginx-on-centos-7/
 [there2]: https://atudomain.github.io/jekyll/update/2019/04/28/generate-ssl-certificate.html
 [there3]: https://linuxize.com/post/secure-nginx-with-let-s-encrypt-on-centos-7/
-[here]: https://atudomain.github.io/jekyll/update/2019/05/26/php-centos7.html 
+[here]: https://atudomain.github.io/jekyll/update/2019/05/26/php-centos7.html
 [here2]: https://atudomain.github.io/jekyll/update/2019/05/26/mariadb-centos7.html

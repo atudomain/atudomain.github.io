@@ -1,8 +1,8 @@
 ---
 layout: post
+label: beginnings
 title:  "Centos 7: MariaDB"
 date:   2019-05-26 21:08:00 +0200
-categories: jekyll update
 ---
 
 Reference tutorial for MariaDB.

@@ -1,8 +1,8 @@
 ---
 layout: post
+label: beginnings
 title:  "Examples: Common ssh tunneling"
 date:   2019-05-05 12:41:00 +0200
-categories: jekyll update
 ---
 
 Jumphost is a server which is connected to internal network as well as accessible from the outside. It can be connected by "ssh atudomain@public.adress -p 2244" in these examples.

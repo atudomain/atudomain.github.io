@@ -1,8 +1,8 @@
 ---
 layout: post
+label: beginnings
 title:  "Generate ssl certificate and sign it as a CA"
 date:   2019-04-28 12:07:00 +0200
-categories: jekyll update
 ---
 There is a nice tutorial for this on the web ([there][there]). However, I wanted to have this in simplified form to copy-paste it with a possibility of making my own comments and improvements.
 

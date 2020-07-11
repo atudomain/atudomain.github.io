@@ -1,8 +1,8 @@
 ---
 layout: post
+label: beginnings
 title:  "Centos 7: Simple snmptrapd usage"
 date:   2019-06-20 13:00:00 +0200
-categories: jekyll update
 ---
 
 Simple settings for snmptrapd to allow Centos 7 system to receive SNMPv2 traps for example from UPS controller.

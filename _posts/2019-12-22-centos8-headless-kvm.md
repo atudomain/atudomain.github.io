@@ -1,12 +1,12 @@
 ---
 layout: post
+label: beginnings
 title:  "Centos 8: Setup and usage of headless QEMU/KVM server"
 date:   2019-12-22 21:13:00 +0200
-categories: virtualization
 ---
 
 Centos 8 system may be used as an efficient and secure virtualization platform.
-QEMU/KVM headless server can be installed there and then remotely connected with 
+QEMU/KVM headless server can be installed there and then remotely connected with
 Virtual Machine Manager application.
 
 ### I. Install QEMU/KVM on hypervisor
@@ -41,7 +41,7 @@ You should already have virsh utility available:
 virsh version
 ```
 
-Optionally, get virt-install utility to simplify 
+Optionally, get virt-install utility to simplify
 installation of new machines from command line:
 
 ```bash

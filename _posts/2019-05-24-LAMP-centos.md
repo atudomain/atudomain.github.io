@@ -1,8 +1,8 @@
 ---
 layout: post
+label: beginnings
 title:  "LAMP stack on Centos 7"
 date:   2019-05-24 09:02:00 +0200
-categories: jekyll update
 ---
 
 Simplest possible LAMP on Centos 7.

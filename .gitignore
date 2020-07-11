@@ -1,5 +1,9 @@
-_site
+# old
 .sass-cache
 .jekyll-metadata
 .idea*
 
+# new
+_site
+.jekyll-cache*
+Gemfile.lock

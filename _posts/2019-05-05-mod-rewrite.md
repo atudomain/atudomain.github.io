@@ -1,8 +1,8 @@
 ---
 layout: post
+label: beginnings
 title:  "Use mod_rewrite with VirtualHost in Apache"
 date:   2019-05-05 15:40:00 +0200
-categories: jekyll update
 ---
 
 In this tutorial, two apache web servers are deployed in private network, apache-1 and apache-2. First of them redirects to the second with a rewrite rule at the same time. Query string is removed and anchor tag is kept in the example. Next, reverse proxy for complete browser url is presented. It is shown how to proxy or forward all traffic to port 80 on apache-1, not just a single page.
@@ -133,7 +133,7 @@ Append to /usr/local/apache2/etc/httpd.conf to make redirect to apache-2 and get
 </VirtualHost>
 {% endhighlight %}
 
-Restart apache gracefully. You should be able to access the page from apache-2 using apache-1 address: 
+Restart apache gracefully. You should be able to access the page from apache-2 using apache-1 address:
 
 {% highlight html %}
 http://192.168.66.11/?firstname=adrian&lastname=adriansurname#example
