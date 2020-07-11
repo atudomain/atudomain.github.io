@@ -2,9 +2,7 @@
   link: /
 - name: Natrix
   link: /natrix.html
-- name: Categories
+- name: Blog
   link: /categories.html
-- name: All Posts
-  link: /blog.html
 - name: About
   link: /about.html
