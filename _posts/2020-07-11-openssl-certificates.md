@@ -62,7 +62,8 @@ Generate CSR ( ca-request.csr ).
 Extensions file ( ca-request.ext ):
 ```
 subjectAltName = DNS:ca.example.com,DNS:example.com,IP:192.168.0.2
-keyUsage = keyCertSign,cRLSign
+keyUsage = critical, keyCertSign,cRLSign
+basicConstraints = critical, CA:true
 ```
 Generate certificate ( ca-self-signed.pem ):
 ```
