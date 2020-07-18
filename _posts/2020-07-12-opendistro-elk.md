@@ -270,4 +270,43 @@ ip            heap.percent ram.percent cpu load_1m load_5m load_15m node.role ma
 ```
 
 # logstashkibana
-tbw
+
+- kibana
+
+On logstashkibana server follow the instructions for rpm on [opendistro kibana](https://opendistro.github.io/for-elasticsearch-docs/docs/kibana/). Try to get the same version
+for kibana as for elasticsearch.
+
+Upload root-ca.pem to '/etc/kibana/cert/'. Leave root permissions.
+Sample configuration ('/etc/kibana/kibana.yml'):
+```
+server.host: 127.0.0.1
+
+elasticsearch.hosts: https://192.168.122.4:9200
+elasticsearch.ssl.verificationMode: full
+elasticsearch.ssl.certificateAuthorities: /etc/kibana/cert/root-ca.pem
+elasticsearch.username: kibanaserver
+elasticsearch.password: kibanaserver
+elasticsearch.requestHeadersWhitelist: ["securitytenant","Authorization"]
+
+opendistro_security.multitenancy.enabled: true
+opendistro_security.multitenancy.tenants.preferred: ["Private", "Global"]
+opendistro_security.readonly_mode.roles: ["kibana_read_only"]
+
+newsfeed.enabled: false
+telemetry.optIn: false
+telemetry.enabled: false
+```
+Change to your password. This configuration verifies elasticsearch certificate and connects using tls.
+However it listens on http://127.0.0.1.
+
+You now have elasticsearch and kibana up and running. It is easy to add some additional
+configuration like https for 'server.host: 0.0.0.0' or you can use some proxy for exposing
+this application over https. Consult [kibana settings reference](https://www.elastic.co/guide/en/kibana/current/settings.html).
+
+- logstash
+
+Easy but tbw.
+
+- filebeat
+
+tbw.
