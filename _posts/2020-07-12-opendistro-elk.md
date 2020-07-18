@@ -15,10 +15,10 @@ It can be extrapolated on more elasticsearch instances.
 # elasticmaster
 
 ### install elsticsearch
-Follow steps from official guide at https://opendistro.github.io/for-elasticsearch-docs/docs/install/rpm/. (it's the source of truth)
+Follow steps from official guide at [opendistro install rpm](https://opendistro.github.io/for-elasticsearch-docs/docs/install/rpm/). (it's the source of truth)
 
 ### generate certificates
-The easiest way is to follow official guide at https://opendistro.github.io/for-elasticsearch-docs/docs/security/configuration/generate-certificates/.
+The easiest way is to follow official guide at [opendistro generate certificates](https://opendistro.github.io/for-elasticsearch-docs/docs/security/configuration/generate-certificates/).
 It generates certificates for single hostname though.
 I recommend setting alternative names for the certificates. Then, the procedure is:
 - root CA (you could use CA already owned and skip this point):
@@ -30,17 +30,18 @@ cat <<EOF | tee root-ca.cnf
 prompt = no
 distinguished_name = dn
 [dn]
-CN = elasticmaster.local
-emailAddress = admin@elasticmaster.local
-O = Example Ltd
-L = Poland
-C = PL
+DC = com
+DC = example
+O = Example Com Inc.
+OU = Root CA
+CN = Root CA
 EOF
 openssl req -new -config root-ca.cnf -key root-ca-key.pem -out root-ca.csr
 cat <<EOF | tee root-ca.ext
-subjectAltName = DNS:elasticmaster.local,IP:192.168.122.4
-keyUsage = critical, keyCertSign,cRLSign
 basicConstraints = critical, CA:true
+keyUsage = critical, digitalSignature,keyCertSign,cRLSign
+subjectKeyIdentifier = hash
+authorityKeyIdentifier = keyid
 EOF
 openssl x509 -req -days 3650 -in root-ca.csr -signkey root-ca-key.pem -extfile root-ca.ext -out root-ca.pem
 rm -f root-ca.cnf root-ca.csr root-ca.ext
@@ -56,15 +57,19 @@ cat <<EOF | tee admin.cnf
 prompt = no
 distinguished_name = dn
 [dn]
-CN = elasticmaster.local
-emailAddress = admin@elasticmaster.local
-O = Example Ltd
-L = Poland
-C = PL
+C = pl
+L = test
+O = client
+OU = client
+CN = admin
 EOF
 openssl req -new -config admin.cnf -key admin-key.pem -out admin.csr
 cat <<EOF | tee admin.ext
-subjectAltName = DNS:elasticmaster.local,IP:192.168.122.4
+authorityKeyIdentifier = keyid,issuer
+subjectKeyIdentifier = hash
+basicConstraints = critical, CA:false
+keyUsage = critical, digitalSignature,keyEncipherment,nonRepudiation
+extendedKeyUsage = critical, clientAuth
 EOF
 openssl x509 -req -days 3650 -in admin.csr -CA root-ca.pem -CAkey root-ca-key.pem -extfile admin.ext -CAcreateserial -out admin.pem
 rm -f admin-key-temp.pem admin.cnf admin.csr admin.ext root-ca.srl
@@ -80,15 +85,20 @@ cat <<EOF | tee elasticmaster.cnf
 prompt = no
 distinguished_name = dn
 [dn]
-CN = elasticmaster.local
-emailAddress = elasticmaster@elasticmaster.local
-O = Example Ltd
-L = Poland
-C = PL
+DC = pl
+L = test
+O = node
+OU = node
+CN = elasticmaster.example.com
 EOF
 openssl req -new -config elasticmaster.cnf -key elasticmaster-key.pem -out elasticmaster.csr
 cat <<EOF | tee elasticmaster.ext
-subjectAltName = DNS:elasticmaster.local,IP:192.168.122.4
+authorityKeyIdentifier = keyid,issuer
+subjectKeyIdentifier = hash
+basicConstraints = critical, CA:false
+keyUsage = critical, digitalSignature,keyEncipherment,nonRepudiation
+extendedKeyUsage = critical, clientAuth,serverAuth
+subjectAltName = RID:1.2.3.4.5.5,DNS:elasticmaster.local,DNS:elasticmaster,IP:192.168.122.4,IP:127.0.0.1
 EOF
 openssl x509 -req -days 3650 -in elasticmaster.csr -CA root-ca.pem -CAkey root-ca-key.pem -extfile elasticmaster.ext -CAcreateserial -out elasticmaster.pem
 rm -f elasticmaster-key-temp.pem elasticmaster.cnf elasticmaster.csr elasticmaster.ext root-ca.srl
@@ -104,15 +114,20 @@ cat <<EOF | tee elasticslave.cnf
 prompt = no
 distinguished_name = dn
 [dn]
-CN = elasticslave.local
-emailAddress = admin@elasticslave.local
-O = Example Ltd
-L = Poland
-C = PL
+DC = pl
+L = test
+O = node
+OU = node
+CN = elasticslave.example.com
 EOF
 openssl req -new -config elasticslave.cnf -key elasticslave-key.pem -out elasticslave.csr
 cat <<EOF | tee elasticslave.ext
-subjectAltName = DNS:elasticslave.local,IP:192.168.122.4
+authorityKeyIdentifier = keyid,issuer
+subjectKeyIdentifier = hash
+basicConstraints = critical, CA:false
+keyUsage = critical, digitalSignature,keyEncipherment,nonRepudiation
+extendedKeyUsage = critical, clientAuth,serverAuth
+subjectAltName = RID:1.2.3.4.5.5,DNS:elasticslave.local,DNS:elasticslave,IP:192.168.122.5,IP:127.0.0.1
 EOF
 openssl x509 -req -days 3650 -in elasticslave.csr -CA root-ca.pem -CAkey root-ca-key.pem -extfile elasticslave.ext -CAcreateserial -out elasticslave.pem
 rm -f elasticslave-key-temp.pem elasticslave.cnf elasticslave.csr elasticslave.ext root-ca.srl
@@ -143,9 +158,12 @@ chmod 550 /etc/elasticsearch/cert
 Remove old certificates from elasticsearch directory (you have to do this).
 Set the following settings in '/etc/elasticsearch/elasticsearch.yml':
 ```
-node.name: node-1
-discovery.seed_hosts: ["127.0.0.1", "192.168.122.5"]
-cluster.initial_master_nodes: ["node-1"]
+cluster.name: example-cluster
+node.name: elasticmaster
+discovery.seed_hosts: ["192.168.122.5"]
+cluster.initial_master_nodes: ["elasticmaster"]
+
+gateway.recover_after_nodes: 2 # change this to 3 if you have more nodes, to 1 to debug
 
 # comment and replace Demo Configuration
 opendistro_security.ssl.transport.pemcert_filepath: /etc/elasticsearch/cert/elasticmaster.pem
@@ -159,7 +177,7 @@ opendistro_security.ssl.http.pemtrustedcas_filepath: /etc/elasticsearch/cert/roo
 opendistro_security.allow_unsafe_democertificates: false
 opendistro_security.allow_default_init_securityindex: false
 opendistro_security.authcz.admin_dn:
-  - C=PL,L=Poland,O=Example Ltd,EMAILADDRESS=admin@elasticmaster.local,CN=elasticmaster.local
+  - CN=admin,OU=client,O=client,L=test,C=pl
 
 opendistro_security.audit.type: internal_elasticsearch
 opendistro_security.enable_snapshot_restore_privilege: true
@@ -167,11 +185,11 @@ opendistro_security.check_snapshot_restore_write_privileges: true
 opendistro_security.restapi.roles_enabled: ["all_access", "security_rest_api_access"]
 cluster.routing.allocation.disk.threshold_enabled: false
 node.max_local_storage_nodes: 3
+
 ```
-Notice reverse order of authcz.admin_dn.
 
 This node is set to be coordinating, master, data and ingesting node.
-Explanation can be found here https://opendistro.github.io/for-elasticsearch-docs/docs/elasticsearch/cluster/. As more nodes join the cluster, roles should be divided.
+Explanation can be found at [opendistro cluster](https://opendistro.github.io/for-elasticsearch-docs/docs/elasticsearch/cluster/). As more nodes join the cluster, roles should be divided.
 
 You may also want to set up jdk options to improve performance, notably in
 '/etc/elasticsearch/jvm.options'.
@@ -199,7 +217,7 @@ cd /usr/share/elasticsearch/plugins/opendistro_security/tools
 
 Once this is done, open external access to elasticsearch in '/etc/elasticsearch/elasticsearch.yml':
 ```
-network.host: 0.0.0.0
+network.host: ["127.0.0.1", "192.168.122.4"]
 http.port: 9200
 ```
 
@@ -211,19 +229,45 @@ Follow the same steps as for elasticmaster, but copy the following certificates 
 
 This node can be configured as data only node:
 ```
-node.name: node-2
-discovery.seed_hosts: ["127.0.0.1", "192.168.122.4"]
-cluster.initial_master_nodes: ["node-1"]
+cluster.name: example-cluster
+node.name: elasticslave
+network.host: ["127.0.0.1", "192.168.122.5"]
+discovery.seed_hosts: ["192.168.122.4"]
+cluster.initial_master_nodes: ["elasticslave"]
 
 node.data: true
 node.master: false
 node.ingest: false
-node.coordinating: false
+
+gateway.recover_after_nodes: 2 # same as for master, increase if possible
 
 # comment and replace Demo Configuration
-...
+opendistro_security.ssl.transport.pemcert_filepath: /etc/elasticsearch/cert/elasticslave.pem
+opendistro_security.ssl.transport.pemkey_filepath: /etc/elasticsearch/cert/elasticslave-key.pem
+opendistro_security.ssl.transport.pemtrustedcas_filepath: /etc/elasticsearch/cert/root-ca.pem
+opendistro_security.ssl.transport.enforce_hostname_verification: true
+opendistro_security.allow_unsafe_democertificates: false
+opendistro_security.authcz.admin_dn:
+  - CN=admin,OU=client,O=client,L=test,C=pl
+
+node.max_local_storage_nodes: 3
 ```
-tbw
+Notice hostname verification. Hostnames in certificates should match at least
+by being present in /etc/hosts.
+
+Once both nodes are up, run admin script for users on master node again to verify you can propagate configuration.
+
+Check status of nodes from master node:
+```
+curl -XGET https://192.168.122.4:9200/_cat/nodes?v -u admin:admin --insecure
+```
+
+You should get something like this:
+```
+ip            heap.percent ram.percent cpu load_1m load_5m load_15m node.role master name
+192.168.122.4           15          89  24    2.18    1.70     0.95 dimr      *      elasticmaster
+192.168.122.5           15          95  15    0.38    0.48     0.27 dr        -      elasticslave
+```
 
 # logstashkibana
 tbw
