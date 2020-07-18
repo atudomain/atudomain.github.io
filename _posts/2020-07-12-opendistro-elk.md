@@ -41,7 +41,7 @@ cat <<EOF | tee root-ca.ext
 basicConstraints = critical, CA:true
 keyUsage = critical, digitalSignature,keyCertSign,cRLSign
 subjectKeyIdentifier = hash
-authorityKeyIdentifier = keyid
+authorityKeyIdentifier = keyid,issuer
 EOF
 openssl x509 -req -days 3650 -in root-ca.csr -signkey root-ca-key.pem -extfile root-ca.ext -out root-ca.pem
 rm -f root-ca.cnf root-ca.csr root-ca.ext

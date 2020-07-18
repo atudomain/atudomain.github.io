@@ -16,6 +16,8 @@ Further, certificates may differ based on their predefined usage, mainly:
 - software signing
 - signing other certificates
 
+Some simple templates are presented below.
+
 # Generate rsa private key
 ```
 openssl genrsa -out private-key.pem 4096
@@ -61,7 +63,6 @@ Generate CSR ( ca-request.csr ).
 
 Extensions file ( ca-request.ext ):
 ```
-subjectAltName = DNS:ca.example.com,DNS:example.com,IP:192.168.0.2
 keyUsage = critical, keyCertSign,cRLSign
 basicConstraints = critical, CA:true
 ```
@@ -108,4 +109,31 @@ Have CA certificate ( ca-self-signed.pem  / ca.pem ).
 Generate and sign certificate:
 ```
 openssl x509 -req -days 3650 -in server-request.csr -CA ca-self-signed.pem -CAkey ca-private-key.pem -extfile server-request.ext -CAcreateserial -out server.pem
+```
+
+# Some advanced usage restrictions
+
+For CA certificate:
+```
+basicConstraints = critical, CA:true
+keyUsage = critical, digitalSignature,keyCertSign,cRLSign
+subjectKeyIdentifier = hash
+authorityKeyIdentifier = keyid,issuer
+```
+For TLS client only, without hostname:
+```
+authorityKeyIdentifier = keyid,issuer
+subjectKeyIdentifier = hash
+basicConstraints = critical, CA:false
+keyUsage = critical, digitalSignature,keyEncipherment,nonRepudiation
+extendedKeyUsage = critical, clientAuth
+```
+For TLS client and server:
+```
+authorityKeyIdentifier = keyid,issuer
+subjectKeyIdentifier = hash
+basicConstraints = critical, CA:false
+keyUsage = critical, digitalSignature,keyEncipherment,nonRepudiation
+extendedKeyUsage = critical, clientAuth,serverAuth
+subjectAltName = RID:1.2.3.4.5.5,DNS:elasticmaster.local,DNS:elasticmaster,IP:192.168.122.4,IP:127.0.0.1
 ```
