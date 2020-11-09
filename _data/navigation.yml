@@ -1,7 +1,5 @@
 - name: Home
   link: /
-- name: Natrix
-  link: /natrix.html
 - name: Blog
   link: /categories.html
 - name: About
