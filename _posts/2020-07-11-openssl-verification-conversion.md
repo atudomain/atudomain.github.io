@@ -1,7 +1,7 @@
 ---
 layout: post
 label: cybersec
-title:  "Verify and convert certificates with openssl"
+title:  "Cheatsheet: Verify and convert certificates with openssl"
 date:   2020-07-11 23:33:00 +0200
 ---
 

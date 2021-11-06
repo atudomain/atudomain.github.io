@@ -1,7 +1,7 @@
 ---
 layout: post
 label: beginnings
-title:  "Examples: Common Ansible usage"
+title:  "Cheatsheet: Common Ansible usage"
 date:   2019-05-12 16:48:00 +0200
 ---
 

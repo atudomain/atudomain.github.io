@@ -1,7 +1,7 @@
 ---
 layout: post
 label: cybersec
-title:  "Generate certificates with openssl"
+title:  "Cheatsheet: Generate certificates with openssl"
 date:   2020-07-11 22:51:00 +0200
 ---
 

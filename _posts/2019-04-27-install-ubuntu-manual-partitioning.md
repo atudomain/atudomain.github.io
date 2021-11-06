@@ -1,7 +1,7 @@
 ---
 layout: post
 label: beginnings
-title:  "Install Ubuntu with manual partitioning for UEFI"
+title:  "Tutorial: Install Ubuntu with manual partitioning for UEFI"
 date:   2019-04-27 23:12:00 +0200
 ---
 I installed Ubuntu 19.04 today and I am so happy with my manual partitioning scheme I decided to make a tutorial on it. The scheme works with UEFI boot mode for my notebook. Tutorial requires a USB drive and a disk that both are going to be completely erased.

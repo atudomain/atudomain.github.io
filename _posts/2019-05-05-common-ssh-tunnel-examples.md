@@ -1,7 +1,7 @@
 ---
 layout: post
 label: beginnings
-title:  "Examples: Common ssh tunneling"
+title:  "Cheatsheet: Common ssh tunneling"
 date:   2019-05-05 12:41:00 +0200
 ---
 
